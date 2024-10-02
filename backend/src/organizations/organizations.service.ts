@@ -4,6 +4,7 @@ import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities/organization.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class OrganizationsService {
@@ -19,6 +20,16 @@ export class OrganizationsService {
     return createdOrganization.save();
   }
 
+  async addUser(id: string, user: User): Promise<Organization> {
+    console.log('id', id);
+    const organization = await this.organizationModel
+      .findById(id)
+      .populate('users')
+      .exec();
+    organization.users.push(user);
+    return organization.save();
+  }
+
   findAll(): Promise<Organization[]> {
     return this.organizationModel.find().exec();
   }
@@ -27,9 +38,13 @@ export class OrganizationsService {
     return this.organizationModel.findById(id).exec();
   }
 
+  findUsers(id: string): Promise<Organization> {
+    return this.organizationModel.findById(id).populate('users').exec();
+  }
+
   update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
     return this.organizationModel
-      .findByIdAndUpdate(id, updateOrganizationDto)
+      .findByIdAndUpdate(id, updateOrganizationDto, { new: true })
       .exec();
   }
 
