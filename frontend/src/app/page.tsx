@@ -1,15 +1,11 @@
-import Login from "../components/buttons/LoginButton";
-import Logout from "@/components/buttons/LogoutButton";
+import {Flowbite } from "flowbite-react";
 
 const Home = () => {
   return (
-    <>
-      {/* <Navbar /> */}
+    <Flowbite>
       <h1>Home</h1>
       <p>Welcome to the Home page!</p>
-      <Login />
-      <Logout />
-    </>
+    </Flowbite>
   );
 };
 

@@ -1,9 +1,11 @@
+import LoginButton from "@/components/buttons/LoginButton";
+
 const route = () => {
   return (
     <div>
-      HOlaaa
+      <a href="/api/auth/login">Login</a>
     </div>
-  )
-}
+  );
+};
 
-export default route
+export default route;
