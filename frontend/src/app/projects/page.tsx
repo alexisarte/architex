@@ -1,6 +1,4 @@
-import LoginButton from "@/components/buttons/LoginButton";
-
-const route = () => {
+const page = () => {
   return (
     <div>
       <a href="/api/auth/login">Login</a>
@@ -8,4 +6,4 @@ const route = () => {
   );
 };
 
-export default route;
+export default page;

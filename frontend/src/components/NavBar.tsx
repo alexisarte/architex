@@ -9,7 +9,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 const NavBar = () => {
   const { user, error, isLoading } = useUser();
-  
+
   if (error) return <div>{error.message}</div>;
 
   return (
@@ -24,38 +24,28 @@ const NavBar = () => {
           Architex
         </span>
       </Navbar.Brand>
-      <div className="flex md:order-2">
-        <Dropdown
-          arrowIcon={false}
-          inline
-          label={
-            <Avatar
-              alt="User settings"
-              img={
-                isLoading || !user
-                  ? "https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                  : user.picture
-              }
-              rounded
-            />
-          }
-        >
-          <Dropdown.Header>
-            <span className="block text-sm">
-              {isLoading || !user ? "Bonnie Green" : user.name}
-            </span>
-            <span className="block truncate text-sm font-medium">
-              {isLoading || !user ? "ame@flowbite.com" : user.email}
-            </span>
-          </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
-        </Dropdown>
-        <Navbar.Toggle />
-      </div>
+      {!isLoading && user ? (
+        <div className="flex md:order-2">
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={<Avatar alt="User settings" img={user.picture} rounded />}
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">{user.name}</span>
+              <span className="block truncate text-sm font-medium">
+                {user.email}
+              </span>
+            </Dropdown.Header>
+            <Dropdown.Item>Dashboard</Dropdown.Item>
+            <Dropdown.Item>Settings</Dropdown.Item>
+            <Dropdown.Item>Earnings</Dropdown.Item>
+            <Dropdown.Divider />
+            <LogoutButton />
+          </Dropdown>
+          <Navbar.Toggle />
+        </div>
+      ) : null}
       <DarkThemeToggle />
       <Navbar.Collapse>
         <Navbar.Link as={Link} href="/" active>
@@ -64,7 +54,7 @@ const NavBar = () => {
         <Navbar.Link as={Link} href="projects">
           Projects
         </Navbar.Link>
-        {user ? <LogoutButton /> : <LoginButton />}
+        {!user && <LoginButton />}
       </Navbar.Collapse>
     </Navbar>
   );
