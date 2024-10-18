@@ -29,7 +29,11 @@ const NavBar = () => {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="User settings" img={user.picture} rounded />}
+            label={
+              user.picture && (
+                <Avatar alt="User settings" img={user.picture} rounded />
+              )
+            }
           >
             <Dropdown.Header>
               <span className="block text-sm">{user.name}</span>
@@ -50,6 +54,9 @@ const NavBar = () => {
       <Navbar.Collapse>
         <Navbar.Link as={Link} href="/" active>
           Home
+        </Navbar.Link>
+        <Navbar.Link as={Link} href="organizations">
+          Organizations
         </Navbar.Link>
         <Navbar.Link as={Link} href="projects">
           Projects
