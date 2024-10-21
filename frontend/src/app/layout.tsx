@@ -2,6 +2,7 @@ import NavBar from "@/components/NavBar";
 import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ThemeModeScript } from "flowbite-react";
+import Head from "next/head";
 
 export default function RootLayout({
   children,
@@ -11,10 +12,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <head>
+        <Head>
           <ThemeModeScript />
-        </head>
-        <body>
+        </Head>
+        <body className="bg-slate-400">
           <NavBar />
           {children}
         </body>

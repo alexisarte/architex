@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/[auth0]/route.js", "src/app/projects/page.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/[auth0]/route.js", "src/app/projects/page.tsx", "src/components/OrganizationForm.jsx", "src/components/OrganizationCard.jsx", "src/app/organizations/page.tsx"],
   "exclude": ["node_modules"]
 }
