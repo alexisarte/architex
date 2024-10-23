@@ -2,7 +2,11 @@ import NavBar from "@/components/NavBar";
 import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ThemeModeScript } from "flowbite-react";
-import Head from "next/head";
+
+export const metadata = {
+  title: "Architex",
+  description: "Esta es mi soprendente herramienta de arquitectura",
+};
 
 export default function RootLayout({
   children,
@@ -12,10 +16,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <Head>
-          <ThemeModeScript />
-        </Head>
         <body className="bg-slate-400">
+          <ThemeModeScript />
           <NavBar />
           {children}
         </body>
