@@ -2,18 +2,31 @@
 
 import OrganizationCard from "@/components/OrganizationCard";
 import { useEffect, useState } from "react";
-import OrganizationDropdown from "@/components/OrganizationDropdown";
-import OrganizationModal from "@/components/OrganizationModal";
 
 const page = () => {
   const [organizations, setOrganizations] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [updateOrganizations, setUpdateOrganizations] = useState(false);
 
   useEffect(() => {
+    console.log("fetching organizations");
     fetch("http://localhost:3000/organizations")
       .then((response) => response.json())
       .then((data) => setOrganizations(data));
-  }, []);
+  }, [updateOrganizations]);
+
+  const handleAccept = async (idOrg: string) => {
+    const response = await fetch(
+      `http://localhost:3000/organizations/${idOrg}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (response.ok) {
+      // setOrganizations(organizations.filter((org) => org._id !== idOrg));
+      setUpdateOrganizations(true);
+    }
+  };
 
   return (
     <>
@@ -23,6 +36,7 @@ const page = () => {
           <OrganizationCard
             key={organization._id}
             organization={organization}
+            handleAccept={handleAccept}
           />
         ))}
 

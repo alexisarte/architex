@@ -5,9 +5,11 @@ import Image from "next/image";
 import OrganizationModal from "./OrganizationModal";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PopupModal from "./PopupModal";
 
-const OrganizationCard = ({ organization }) => {
+const OrganizationCard = ({ organization, handleAccept }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [openPopupModal, setOpenPopupModal] = useState(false);
   const router = useRouter();
 
   const handleClick = () => {
@@ -18,16 +20,9 @@ const OrganizationCard = ({ organization }) => {
     router.push(`/organizations/${organization._id}`);
   };
 
-  const handleDelete = async () => {
-    const response = await fetch(
-      `http://localhost:3000/organizations/${organization._id}`,
-      {
-        method: "DELETE",
-      }
-    );
-    if (response.ok) {
-      router.reload();
-    }
+  const handleDelete = () => {
+    console.log("delete");
+    setOpenPopupModal(true);
   };
 
   return (
@@ -39,9 +34,9 @@ const OrganizationCard = ({ organization }) => {
           height={500}
           src="/organization.png"
           alt="organization image"
+          onClick={handleRedirect}
         />
       )}
-      onClick={handleRedirect}
     >
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         {organization.name}
@@ -60,6 +55,15 @@ const OrganizationCard = ({ organization }) => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           initialOrganization={organization}
+        />
+      )}
+      {openPopupModal && (
+        <PopupModal
+          openPopupModal={openPopupModal}
+          setOpenPopupModal={setOpenPopupModal}
+          title="Eliminar organización"
+          message="¿Estás seguro de que deseas eliminar esta organización?"
+          onAccept={() => handleAccept(organization._id)}
         />
       )}
     </Card>
