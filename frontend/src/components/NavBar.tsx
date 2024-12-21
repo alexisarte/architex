@@ -32,7 +32,7 @@ const NavBar = () => {
           </span>
         </Navbar.Brand>
         {!isLoading && user ? (
-          <div className="flex md:order-2">
+          <div className="flex md:order-2 justify-between items-center gap-4">
             {pathname === "/organizations" && (
               <OrganizationDropdown handleClick={() => setOpenModal(true)} />
             )}
