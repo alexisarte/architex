@@ -11,7 +11,7 @@ type Inputs = {
   description: string;
   address: string;
   contacts: string;
-  letter: string;
+  identifier: string;
   number: number;
   year: string;
   item: string;
@@ -99,38 +99,14 @@ const OrganizationModal = ({ title, openModal, setOpenModal, initialOrganization
             }
           />
           <FloatingLabel
-            defaultValue={initialOrganization.letter}
+            defaultValue={initialOrganization.identifier}
             variant="outlined"
-            label="Letra"
-            name="letter"
-            {...register("letter")}
-            helperText={errors.letter && <span>{errors.letter.message}</span>}
+            label="Identificador"
+            name="identifier"
+            {...register("identifier")}
+            helperText={errors.identifier && <span>{errors.identifier.message}</span>}
           />
-          <FloatingLabel
-            defaultValue={initialOrganization.number}
-            variant="outlined"
-            label="Número"
-            name="number"
-            type="number"
-            {...register("number")}
-            helperText={errors.number && <span>{errors.number.message}</span>}
-          />
-          <FloatingLabel
-            defaultValue={initialOrganization.year}
-            variant="outlined"
-            label="Año"
-            name="year"
-            {...register("year")}
-            helperText={errors.year && <span>{errors.year.message}</span>}
-          />
-          <FloatingLabel
-            defaultValue={initialOrganization.item}
-            variant="outlined"
-            label="Partida"
-            name="item"
-            {...register("item")}
-            helperText={errors.item && <span>{errors.item.message}</span>}
-          />
+          
 
           <div className="flex justify-center w-full">
             <Button className="w-1/2" type="submit">

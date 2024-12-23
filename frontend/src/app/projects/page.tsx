@@ -1,7 +1,7 @@
 const page = () => {
   return (
     <div>
-      <a href="/api/auth/login">Login</a>
+      <h1 className="text-3xl font-semibold text-center">Proyectos</h1>
     </div>
   );
 };

@@ -2,8 +2,6 @@ import type { NextRequest } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0/edge';
 
 export async function middleware(request: NextRequest) {
-  console.log('middleware');
-  
   const session = await getSession();
   
   if (session?.user && !request.nextUrl.pathname.startsWith('/')) {
