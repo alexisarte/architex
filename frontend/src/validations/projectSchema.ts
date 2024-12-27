@@ -32,6 +32,9 @@ export const projectSchema = z.object({
     })
     .max(200, {
       message: "Type must be at most 200 characters long",
+    })
+    .refine(value => value !== "Seleccione el tipo de obra", {
+      message: "Debe seleccionar un tipo de obra válido",
     }),
   destination: z
     .string()
@@ -40,6 +43,9 @@ export const projectSchema = z.object({
     })
     .max(200, {
       message: "Destination must be at most 200 characters long",
+    })
+    .refine(value => value !== "Seleccione el destino funcional", {
+      message: "Debe seleccionar un destino funcional válido",
     }),
   location: z
     .string()
@@ -64,6 +70,9 @@ export const projectSchema = z.object({
     })
     .max(200, {
       message: "Approval must be at most 200 characters long",
+    })
+    .refine(value => value !== "Seleccione el estado del proyecto", {
+      message: "Debe seleccionar una aprobación válida",
     }),
 });
 

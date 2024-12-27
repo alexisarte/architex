@@ -13,25 +13,20 @@ export class Organization {
   address: string;
 
   @Prop([Object])
-  contactos: [Object];
+  contacts: [Object];
 
   @Prop()
   description: string;
 
   @Prop()
-  letter: string;
-
-  @Prop()
-  number: number;
-
-  @Prop()
-  year: string;
-
-  @Prop()
-  item: string;
+  identifier: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
   users: User[];
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }] })
+  projects: mongoose.Schema.Types.ObjectId[];
+
 }
 
 export const OrganizationSchema = SchemaFactory.createForClass(Organization);

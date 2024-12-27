@@ -26,7 +26,7 @@ interface Professional {
   provincialRegistration: string;
   municipalRegistration: string;
   dni?: string;
-  address?: string;
+  location?: string;
 }
 
 @Schema()
@@ -44,7 +44,7 @@ export class Project {
   destination: Destination;
 
   @Prop({ required: true })
-  address: string;
+  location: string;
 
   @Prop({ required: true })
   scale: string;
@@ -59,7 +59,7 @@ export class Project {
   antecedent?: string;
 
   @Prop({ required: true })
-  approval: boolean;
+  approval: string;
 
   @Prop({ required: true })
   planners: Professional[];
@@ -67,11 +67,11 @@ export class Project {
   @Prop({ required: true })
   contractors: Professional[];
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  owner: Types.ObjectId;
+  // @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  // owner: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Organization', required: true })
-  organization: Types.ObjectId;
+  // @Prop({ type: Types.ObjectId, ref: 'Organization', required: true })
+  // organization: Types.ObjectId;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);
