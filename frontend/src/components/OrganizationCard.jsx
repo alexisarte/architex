@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PopupModal from "./PopupModal";
 
-const OrganizationCard = ({ organization, handleAccept }) => {
+const OrganizationCard = ({ organization, handleAccept = () => {} }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openPopupModal, setOpenPopupModal] = useState(false);
   const router = useRouter();

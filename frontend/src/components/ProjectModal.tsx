@@ -19,6 +19,7 @@ type Inputs = {
   owner: object;
   proyectistas: object[];
   constructores: object[];
+  organization: string;
 };
 
 enum ProjectType {
@@ -44,6 +45,7 @@ const destinationsArray = Object.values(Destination);
 
 const ProjectModal = ({
   title,
+  organizationId,
   openModal,
   setOpenModal,
   initialProject = {},
@@ -75,6 +77,7 @@ const ProjectModal = ({
   console.log(errors);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    data.organization = organizationId;
     if (title === "Crear proyecto") {
       await fetch("http://localhost:3000/projects", {
         method: "POST",

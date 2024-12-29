@@ -5,6 +5,7 @@ import { Organization } from './entities/organization.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/users/entities/user.entity';
+import { Project } from 'src/projects/entities/project.entity';
 
 @Injectable()
 export class OrganizationsService {
@@ -27,6 +28,16 @@ export class OrganizationsService {
       .populate('users')
       .exec();
     organization.users.push(user);
+    return organization.save();
+  }
+
+  async addProject(id: string, project: Project): Promise<Organization> {
+    console.log('id', id);
+    const organization = await this.organizationModel
+      .findById(id)
+      .populate('projects')
+      .exec();
+    organization.projects.push(project);
     return organization.save();
   }
 

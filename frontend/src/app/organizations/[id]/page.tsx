@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import ProjectModal from "@/components/ProjectModal";
+import OrganizationCard from "@/components/OrganizationCard";
 
 const Page = () => {
   const [organization, setOrganization] = useState(null);
@@ -36,9 +37,8 @@ const Page = () => {
   return (
     <div>
       {organization ? (
-        <>
-          <h1 className="text-3xl font-semibold text-center">{organization.name}</h1>
-          <p>{organization.description}</p>
+        <div className="container mx-auto p-4">
+          <OrganizationCard organization={organization} />
           <button onClick={handleAddProject} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Agregar proyecto
           </button>
@@ -46,6 +46,7 @@ const Page = () => {
             openModal && (
               <ProjectModal
                 title="Crear proyecto"
+                organizationId={organization._id}
                 openModal={openModal}
                 setOpenModal={setOpenModal}
               />
@@ -63,7 +64,7 @@ const Page = () => {
               </div>
             ))
           } */}
-        </>
+        </div>
       ) : (
         <p>Loading...</p>
       )}
