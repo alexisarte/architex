@@ -2,17 +2,22 @@
 
 import OrganizationCard from "@/components/OrganizationCard";
 import { useEffect, useState } from "react";
+import Loading from "../loading";
 
 const page = () => {
   const [organizations, setOrganizations] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
   const [updateOrganizations, setUpdateOrganizations] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     console.log("fetching organizations");
     fetch("http://localhost:3000/organizations")
       .then((response) => response.json())
-      .then((data) => setOrganizations(data));
+      .then((data) => {
+        setOrganizations(data);
+        setLoading(false);
+        console.log(data);
+      });
   }, [updateOrganizations]);
 
   const handleAccept = async (idOrg: string) => {
@@ -31,21 +36,19 @@ const page = () => {
   return (
     <>
       <h1 className="text-4xl font-semibold text-center p-4">Organizaciones</h1>
-      <div className="grid grid-cols-3 gap-4 place-items-center p-4">
-        {organizations.map((organization) => (
-          <OrganizationCard
-            key={organization._id}
-            organization={organization}
-            handleAccept={handleAccept}
-          />
-        ))}
-
-        {/* <OrganizationDropdown handleClick={() => setOpenModal(true)} /> */}
-
-        {/* {openModal && (
-        <OrganizationModal title="Crear organización" openModal={openModal} setOpenModal={setOpenModal} />
-      )} */}
-      </div>
+      {!loading ? (
+        <div className="grid grid-cols-3 gap-4 place-items-center p-4">
+          {organizations.map((organization) => (
+            <OrganizationCard
+              key={organization._id}
+              organization={organization}
+              handleAccept={handleAccept}
+            />
+          ))}
+        </div>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };

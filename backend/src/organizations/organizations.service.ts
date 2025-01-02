@@ -46,7 +46,7 @@ export class OrganizationsService {
   }
 
   findOne(id: string): Promise<Organization> {
-    return this.organizationModel.findById(id).exec();
+    return this.organizationModel.findById(id).populate('projects').exec();
   }
 
   findUsers(id: string): Promise<Organization> {
