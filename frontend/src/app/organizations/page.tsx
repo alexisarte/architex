@@ -3,11 +3,31 @@
 import OrganizationCard from "@/components/OrganizationCard";
 import { useEffect, useState } from "react";
 import Loading from "../loading";
+import DropZone from "@/components/DropZone";
+import ImageCropper from "@/components/ImageCropper";
+import PdfViewer from "@/components/PdfViewer";
 
 const page = () => {
   const [organizations, setOrganizations] = useState([]);
   const [updateOrganizations, setUpdateOrganizations] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+  // const [tags, setTags] = useState(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      setSelectedFile(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleCrop = (image) => {
+    setCroppedImage(image);
+  };
 
   useEffect(() => {
     console.log("fetching organizations");
