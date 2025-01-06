@@ -3,9 +3,6 @@
 import OrganizationCard from "@/components/OrganizationCard";
 import { useEffect, useState } from "react";
 import Loading from "../loading";
-import DropZone from "@/components/DropZone";
-import ImageCropper from "@/components/ImageCropper";
-import PdfViewer from "@/components/PdfViewer";
 
 const page = () => {
   const [organizations, setOrganizations] = useState([]);

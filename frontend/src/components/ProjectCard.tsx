@@ -1,10 +1,18 @@
 "use client";
 
 import { Card } from "flowbite-react";
+import { useRouter } from "next/navigation";
 
 const ProjectCard = ({ project }) => {
+
+  const router = useRouter();
+
+  const handleRedirect = () => {
+    router.push(`/projects/${project._id}`);
+  };
+
   return (
-    <Card href="#" className="max-w-sm">
+    <Card onClick={handleRedirect} className="max-w-sm cursor-pointer">
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         {project.name}
       </h5>

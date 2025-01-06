@@ -11,7 +11,7 @@ import ImageCropper from "@/components/ImageCropper";
 import PdfViewer from "@/components/PdfViewer";
 
 const Page = () => {
-  const [organization, setOrganization] = useState(null);
+  const [project, setProject] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const params = useParams();
 
@@ -21,27 +21,27 @@ const Page = () => {
   const [croppedImage, setCroppedImage] = useState(null);
   // const [tags, setTags] = useState(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [changePlanner, setChangePlanner] = useState(false);
+  const [uploadDrawing, setUploadDrawing] = useState(false);
 
   useEffect(() => {
-    const fetchOrganization = async () => {
+    const fetchProject = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/organizations/${params.id}`
+          `http://localhost:3000/projects/${params.id}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const org = await response.json();
         console.log(org);
-        setOrganization(org);
+        setProject(org);
       } catch (error) {
-        console.error("Failed to fetch organization:", error);
+        console.error("Failed to fetch project:", error);
       }
     };
 
     if (params.id) {
-      fetchOrganization();
+      fetchProject();
     }
   }, [params.id]);
   const handleAddProject = () => {
@@ -62,34 +62,30 @@ const Page = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Button onClick={handleAddProject}>Agregar proyecto</Button>
-      {organization ? (
+      {project ? (
         <>
           <div className="container mx-auto p-4">
             <h1 className="text-4xl font-semibold text-center p-4">
-              {organization.name}
+              {project.name}
             </h1>
             <p className="text-lg font-semibold text-center p-4">
-              {organization.description}
+              {project.type}
             </p>
+            <Button onClick={() => setUploadDrawing(!uploadDrawing)}>
+              Cargar plano
+            </Button>
             {openModal && (
               <ProjectModal
                 title="Crear proyecto"
-                organizationId={organization._id}
+                projectId={project._id}
                 openModal={openModal}
                 setOpenModal={setOpenModal}
               />
             )}
-            <div>
-              <h2 className="text-2xl font-semibold">Proyectos</h2>
-              <div className="grid grid-cols-3 gap-4">
-                {organization.projects.map((project) => (
-                  <ProjectCard key={project._id} project={project} />
-                ))}
-              </div>
-            </div>
           </div>
-          {changePlanner ? (
+          <DropZone preview={preview} handleFileSelect={handleFileChange} />
+
+          {uploadDrawing ? (
             <>
               <DropZone preview={preview} handleFileSelect={handleFileChange} />
               {selectedFile && !croppedImage && (
