@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import ProjectModal from "@/components/ProjectModal";
-import ProjectCard from "@/components/ProjectCard";
-import { Button } from "flowbite-react";
 import Loading from "@/app/loading";
 import DropZone from "@/components/DropZone";
 import ImageCropper from "@/components/ImageCropper";
@@ -44,13 +42,14 @@ const Page = () => {
       fetchProject();
     }
   }, [params.id]);
+
   const handleAddProject = () => {
     setOpenModal((openModal) => !openModal);
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
+  const handleFileChange = (files) => {
+    if (files && files[0]) {
+      const file = files[0];
       setSelectedFile(file);
       setPreview(URL.createObjectURL(file));
     }
@@ -71,9 +70,9 @@ const Page = () => {
             <p className="text-lg font-semibold text-center p-4">
               {project.type}
             </p>
-            <Button onClick={() => setUploadDrawing(!uploadDrawing)}>
+            {/* <Button onClick={() => setUploadDrawing(!uploadDrawing)}>
               Cargar plano
-            </Button>
+            </Button> */}
             {openModal && (
               <ProjectModal
                 title="Crear proyecto"
@@ -83,28 +82,22 @@ const Page = () => {
               />
             )}
           </div>
-          <DropZone preview={preview} handleFileSelect={handleFileChange} />
-
-          {uploadDrawing ? (
-            <>
-              <DropZone preview={preview} handleFileSelect={handleFileChange} />
-              {selectedFile && !croppedImage && (
-                <div>
-                  {selectedFile.type.startsWith("image/") ? (
-                    <ImageCropper image={preview} onCrop={handleCrop} />
-                  ) : (
-                    <PdfViewer file={selectedFile} />
-                  )}
-                </div>
+          {!selectedFile && <DropZone handleFileSelect={handleFileChange} />}
+          {selectedFile && !croppedImage && (
+            <div>
+              {selectedFile.type.startsWith("image/") ? (
+                <ImageCropper image={preview} onCrop={handleCrop} />
+              ) : (
+                <PdfViewer file={selectedFile} />
               )}
-              {croppedImage && (
-                <div>
-                  <img src={croppedImage} alt="Cropped" />
-                  {/* <TagForm onSubmit={handleTagSubmit} /> */}
-                </div>
-              )}
-            </>
-          ) : null}
+            </div>
+          )}
+          {croppedImage && (
+            <div>
+              <img src={croppedImage} alt="Cropped" />
+              {/* <TagForm onSubmit={handleTagSubmit} /> */}
+            </div>
+          )}
         </>
       ) : (
         <Loading />
