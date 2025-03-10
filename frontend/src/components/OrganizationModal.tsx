@@ -1,10 +1,11 @@
 "use client";
 
 import { Button, FloatingLabel, Modal } from "flowbite-react";
-import { useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { organizationSchema } from "@/validations/organizationSchema";
+import { OrganizationsContext } from "@/context/OrganizationsContext";
 
 type Inputs = {
   name: string;
@@ -17,8 +18,14 @@ type Inputs = {
   item: string;
 };
 
-const OrganizationModal = ({ title, openModal, setOpenModal, initialOrganization = {}}) => {
+const OrganizationModal = ({
+  title,
+  openModal,
+  setOpenModal,
+  initialOrganization = {},
+}) => {
   const organization = useRef();
+  const { addOrganization } = useContext(OrganizationsContext);
 
   const {
     register,
@@ -32,21 +39,18 @@ const OrganizationModal = ({ title, openModal, setOpenModal, initialOrganization
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (title === "Crear organización") {
-      await fetch("http://localhost:3000/organizations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      addOrganization(data);
     } else {
-      await fetch(`http://localhost:3000/organizations/${initialOrganization._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      await fetch(
+        `http://localhost:3000/organizations/${initialOrganization._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
     }
     setOpenModal(false);
   };
@@ -104,9 +108,10 @@ const OrganizationModal = ({ title, openModal, setOpenModal, initialOrganization
             label="Identificador"
             name="identifier"
             {...register("identifier")}
-            helperText={errors.identifier && <span>{errors.identifier.message}</span>}
+            helperText={
+              errors.identifier && <span>{errors.identifier.message}</span>
+            }
           />
-          
 
           <div className="flex justify-center w-full">
             <Button className="w-1/2" type="submit">

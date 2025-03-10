@@ -1,40 +1,25 @@
 "use client";
 
 import OrganizationCard from "@/components/OrganizationCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Loading from "../loading";
+import { OrganizationsContext } from "@/context/OrganizationsContext";
 
 const page = () => {
-  const [organizations, setOrganizations] = useState([]);
+  const { organizations } = useContext(OrganizationsContext);
   const [updateOrganizations, setUpdateOrganizations] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(null);
-  // const [tags, setTags] = useState(null);
-  const [preview, setPreview] = useState<string | null>(null);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setSelectedFile(file);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleCrop = (image) => {
-    setCroppedImage(image);
+  const fetchOrganizations = async () => {
+    const response = await fetch("http://localhost:3000/organizations");
+    const data = await response.json();
+    setUpdateOrganizations(false);
+    setLoading(false);
   };
 
   useEffect(() => {
     console.log("fetching organizations");
-    fetch("http://localhost:3000/organizations")
-      .then((response) => response.json())
-      .then((data) => {
-        setOrganizations(data);
-        setLoading(false);
-        console.log(data);
-      });
+    fetchOrganizations();
   }, [updateOrganizations]);
 
   const handleAccept = async (idOrg: string) => {
