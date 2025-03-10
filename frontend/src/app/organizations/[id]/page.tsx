@@ -91,7 +91,7 @@ const Page = () => {
           </div>
           {changePlanner ? (
             <>
-              <DropZone preview={preview} handleFileSelect={handleFileChange} />
+              {/* <DropZone preview={preview} handleFileSelect={handleFileChange} /> */}
               {selectedFile && !croppedImage && (
                 <div>
                   {selectedFile.type.startsWith("image/") ? (

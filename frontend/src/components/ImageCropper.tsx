@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Button } from 'flowbite-react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
@@ -32,7 +32,7 @@ const ImageCropper = ({ image, onCrop, addImageToProject }) => {
   }
 
   return (
-    <div>
+    <div className='m-4'>
       <Cropper
         src={image}
         style={{ height: 400, width: '100%' }}
@@ -40,8 +40,7 @@ const ImageCropper = ({ image, onCrop, addImageToProject }) => {
         guides={false}
         ref={cropperRef}
       />
-      {/* <button onClick={handleCrop}>Recortar</button> */}
-      <Button onClick={handleCrop}>Recortar</Button>
+      <Button className='mt-4' onClick={handleCrop}>Cargar plano</Button>
     </div>
   );
 };

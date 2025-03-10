@@ -51,7 +51,7 @@ const DropZone = ({ handleFileSelect }) => {
             />
           </svg>
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">Haga clic para cargar</span> o
+            <span className="font-semibold">Haga clic para cargar un plano</span> o
             arrastre y suelte
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400">

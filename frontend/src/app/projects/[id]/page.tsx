@@ -15,11 +15,11 @@ const Page = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(null);
-  // const [tags, setTags] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [croppedImages, setCroppedImages] = useState<string[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
-  const [uploadDrawing, setUploadDrawing] = useState(false);
+
+  const [isCropping, setIsCropping] = useState(false); // Nuevo estado para controlar la visibilidad
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -30,9 +30,8 @@ const Page = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const org = await response.json();
-        console.log(org);
-        setProject(org);
+        const projectData = await response.json();
+        setProject(projectData);
       } catch (error) {
         console.error("Failed to fetch project:", error);
       }
@@ -47,43 +46,47 @@ const Page = () => {
     setOpenModal((openModal) => !openModal);
   };
 
-  const handleFileChange = (files) => {
+  const handleFileChange = (files: FileList) => {
     if (files && files[0]) {
       const file = files[0];
       setSelectedFile(file);
-      setPreview(URL.createObjectURL(file));
+      setPreview(URL.createObjectURL(file)); // Actualizar vista previa con el nuevo archivo
+      setIsCropping(true); // Hacer visible el recortador y ocultar el DropZone
     }
   };
 
-  const handleCrop = (image) => {
-    setCroppedImage(image);
+  const handleCrop = (image: string) => {
+    // Añadir la imagen recortada a la lista sin borrar las anteriores
+    setCroppedImages((prevImages) => [image, ...prevImages]);
+    setSelectedFile(null); // Limpiar el archivo seleccionado después del recorte
+    setIsCropping(false); // Volver a mostrar el DropZone después de recortar
   };
 
-  const encodeImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  const addImageToProject = async (image) => {
-    // const base64Image = await encodeImageToBase64(image);
-    console.log("image", image);
-    const response = await fetch(`http://localhost:3000/projects/${project._id}/image`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ image: image }),
-    });
-
+  const addImageToProject = async (image: string) => {
+    const response = await fetch(
+      `http://localhost:3000/projects/${project._id}/image`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image }),
+      }
+    );
+  
     if (response.ok) {
       const updatedProject = await response.json();
-      setProject(updatedProject);
+      
+      // Asegurar que el nuevo plano se agregue al inicio del array
+      setProject((prevProject) => ({
+        ...prevProject,
+        planos: [image, ...prevProject.planos], // Nuevo plano primero
+      }));
+  
+      console.log("Image added to project:", updatedProject);
     }
-  }
+  };
+  
 
   return (
     <div className="container mx-auto p-4">
@@ -96,9 +99,6 @@ const Page = () => {
             <p className="text-lg font-semibold text-center p-4">
               {project.type}
             </p>
-            {/* <Button onClick={() => setUploadDrawing(!uploadDrawing)}>
-              Cargar plano
-            </Button> */}
             {openModal && (
               <ProjectModal
                 title="Crear proyecto"
@@ -108,22 +108,39 @@ const Page = () => {
               />
             )}
           </div>
-          {!selectedFile && <DropZone handleFileSelect={handleFileChange} />}
-          {selectedFile && !croppedImage && (
+
+          {/* Render selected file for cropping */}
+          {selectedFile && isCropping && (
             <div>
               {selectedFile.type.startsWith("image/") ? (
-                <ImageCropper image={preview} onCrop={handleCrop} addImageToProject={addImageToProject} />
+                <>
+                  <ImageCropper
+                    image={preview}
+                    onCrop={handleCrop}
+                    addImageToProject={addImageToProject} // Pasar la función como prop
+                  />
+                </>
               ) : (
                 <PdfViewer file={selectedFile} />
               )}
             </div>
           )}
-          {croppedImage && (
-            <div>
-              <img src={croppedImage} alt="Cropped" />
-              {/* <TagForm onSubmit={handleTagSubmit} /> */}
-            </div>
-          )}
+
+          {/* DropZone to handle file selection */}
+          {!isCropping && <DropZone handleFileSelect={handleFileChange} />}
+
+          <h3 className="text-xl text-center m-4">Planos</h3>
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            {project.planos.map((plan, index) => (
+              <div key={index} className="flex items-center justify-center">
+                <img
+                  src={plan} // Asumiendo que la imagen ya está en base64 o que `plan.image` es el path al archivo
+                  alt={`Plano ${index + 1}`}
+                  className="w-32 h-32 object-cover rounded-lg shadow-lg" // Añadí algunas clases de Tailwind para darle estilo
+                />
+              </div>
+            ))}
+          </div>
         </>
       ) : (
         <Loading />
