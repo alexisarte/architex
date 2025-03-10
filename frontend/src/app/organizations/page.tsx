@@ -9,6 +9,7 @@ const page = () => {
   const { organizations } = useContext(OrganizationsContext);
   const [updateOrganizations, setUpdateOrganizations] = useState(false);
   const [loading, setLoading] = useState(true);
+  const {deleteOrganization} = useContext(OrganizationsContext);
 
   const fetchOrganizations = async () => {
     const response = await fetch("http://localhost:3000/organizations");
@@ -23,16 +24,7 @@ const page = () => {
   }, [updateOrganizations]);
 
   const handleAccept = async (idOrg: string) => {
-    const response = await fetch(
-      `http://localhost:3000/organizations/${idOrg}`,
-      {
-        method: "DELETE",
-      }
-    );
-    if (response.ok) {
-      // setOrganizations(organizations.filter((org) => org._id !== idOrg));
-      setUpdateOrganizations(true);
-    }
+    deleteOrganization(idOrg);
   };
 
   return (

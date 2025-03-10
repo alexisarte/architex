@@ -31,8 +31,18 @@ export const OrganizationsProvider = ({ children }) => {
     }
   };
 
+  const deleteOrganization = async (id) => {
+    const response = await fetch(`http://localhost:3000/organizations/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      setOrganizations((prev) => prev.filter((org) => org._id !== id));
+    }
+  }
+
   return (
-    <OrganizationsContext.Provider value={{ organizations, loading, addOrganization }}>
+    <OrganizationsContext.Provider value={{ organizations, loading, addOrganization, deleteOrganization }}>
       {children}
     </OrganizationsContext.Provider>
   );
