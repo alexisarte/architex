@@ -24,9 +24,7 @@ Se deberá permitir definir un proyecto de construcción y una lista de planos q
 - **Ubicación**: Se indica el domicilio del inmueble. Ejemplo: Calle 56 entre calle 9 y 10.
 - **Escala**: Corresponde a la escala gráfica del dibujo, relacionando las dimensiones reales con las representadas. El patrón es número:número como por ejemplo 1:100
 - **Otras exigencias**: Se puede indicar la zonificación que corresponde según el Código de Planeamiento. Se pueden indicar superficie y otros parámetros como F.O.T y F.O.S.
-
-#### Referencias
-
+- **Referencias**
 - **Antecedente**: Es una descripción de texto libre que referencia a algún expediente anterior. Por ejemplo, en caso de demolición se puede indicar el plano de construcción de dicha edificación.
 - **Propietario**: Hace referencia al titular del inmueble. Puede incluir datos personales, DNI y/o domicilio.
 - **Proyectistas**: Hace referencia a los profesionales que han desarrollado el diseño y cálculos. Puede ser varios. Puede incluir nombre y apellido, Matrícula provincial, Matrícula municipal, DNI y/o domicilio.

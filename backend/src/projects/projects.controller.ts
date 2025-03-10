@@ -6,13 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { OrganizationsService } from '../organizations/organizations.service';
-
+import { FileInterceptor } from '@nestjs/platform-express';
 @ApiTags('projects')
 @Controller('projects')
 export class ProjectsController {
@@ -39,6 +42,13 @@ export class ProjectsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.projectsService.findOne(id);
+  }
+
+  @Put(':id/image')
+  async addImage(@Param('id') id: string, @Body() body: { image: string }) {
+    console.log('id', id);
+    console.log('body', body);
+    return this.projectsService.addImage(id, body.image);
   }
 
   @Patch(':id')

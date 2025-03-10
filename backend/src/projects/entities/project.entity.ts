@@ -72,6 +72,9 @@ export class Project {
 
   @Prop({ type: Types.ObjectId, ref: 'Organization', required: true })
   organization: Types.ObjectId;
+
+  @Prop({ type: [String], required: false })
+  planos: string[];
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

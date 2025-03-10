@@ -59,6 +59,32 @@ const Page = () => {
     setCroppedImage(image);
   };
 
+  const encodeImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const addImageToProject = async (image) => {
+    // const base64Image = await encodeImageToBase64(image);
+    console.log("image", image);
+    const response = await fetch(`http://localhost:3000/projects/${project._id}/image`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: image }),
+    });
+
+    if (response.ok) {
+      const updatedProject = await response.json();
+      setProject(updatedProject);
+    }
+  }
+
   return (
     <div className="container mx-auto p-4">
       {project ? (
@@ -86,7 +112,7 @@ const Page = () => {
           {selectedFile && !croppedImage && (
             <div>
               {selectedFile.type.startsWith("image/") ? (
-                <ImageCropper image={preview} onCrop={handleCrop} />
+                <ImageCropper image={preview} onCrop={handleCrop} addImageToProject={addImageToProject} />
               ) : (
                 <PdfViewer file={selectedFile} />
               )}

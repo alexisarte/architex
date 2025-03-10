@@ -25,6 +25,14 @@ export class ProjectsService {
     return this.projectModel.findById(id).exec();
   }
 
+  async addImage(id: string, image: string): Promise<Project> {
+    const project = await this.projectModel
+      .findById(id)
+      .exec();
+    project.planos.push(image);
+    return project.save();
+  }
+
   update(id: string, updateProjectDto: UpdateProjectDto) {
     return this.projectModel
       .findByIdAndUpdate(id, updateProjectDto, { new: true })
