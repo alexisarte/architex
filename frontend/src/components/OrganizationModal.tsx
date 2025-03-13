@@ -1,11 +1,12 @@
 "use client";
 
 import { Button, FloatingLabel, Modal } from "flowbite-react";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { organizationSchema } from "@/validations/organizationSchema";
 import { OrganizationsContext } from "@/context/OrganizationsContext";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 type Inputs = {
   name: string;
@@ -26,6 +27,7 @@ const OrganizationModal = ({
 }) => {
   const organization = useRef();
   const { addOrganization } = useContext(OrganizationsContext);
+  const { user } = useUser();
 
   const {
     register,
@@ -39,7 +41,8 @@ const OrganizationModal = ({
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (title === "Crear organización") {
-      addOrganization(data);
+      const newData = { ...data, userId: user.sub };
+      addOrganization(newData);
     } else {
       await fetch(
         `http://localhost:3000/organizations/${initialOrganization._id}`,

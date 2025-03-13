@@ -21,15 +21,15 @@ export class OrganizationsService {
     return createdOrganization.save();
   }
 
-  async addUser(id: string, user: User): Promise<Organization> {
-    console.log('id', id);
-    const organization = await this.organizationModel
-      .findById(id)
-      .populate('users')
-      .exec();
-    organization.users.push(user);
-    return organization.save();
-  }
+  // async addUser(id: string, user: User): Promise<Organization> {
+  //   console.log('id', id);
+  //   const organization = await this.organizationModel
+  //     .findById(id)
+  //     .populate('users')
+  //     .exec();
+  //   organization.users.push(user);
+  //   return organization.save();
+  // }
 
   async addProject(id: string, project: Project): Promise<Organization> {
     console.log('id', id);
@@ -62,4 +62,17 @@ export class OrganizationsService {
   remove(id: string) {
     return this.organizationModel.findByIdAndDelete(id).exec();
   }
+
+  async addUserToOrganization(orgId: string, userSub: string) {
+    return this.organizationModel.findByIdAndUpdate(
+      orgId,
+      { $addToSet: { userIds: userSub } }, // Evita duplicados
+      { new: true }
+    ).exec();
+  }
+
+  async findByUser(userId: string) {
+    return this.organizationModel.find({ userIds: userId }).exec();
+  }
+  
 }

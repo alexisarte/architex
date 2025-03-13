@@ -16,15 +16,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <OrganizationsProvider>
-        <UserProvider>
+      <UserProvider>
+        <OrganizationsProvider>
           <body className="bg-slate-400">
             <ThemeModeScript />
             <NavBar />
             {children}
           </body>
-        </UserProvider>
-      </OrganizationsProvider>
+        </OrganizationsProvider>
+      </UserProvider>
     </html>
   );
 }

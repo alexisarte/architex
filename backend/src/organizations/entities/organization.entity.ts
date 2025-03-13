@@ -7,6 +7,8 @@ export type OrganizationDocument = HydratedDocument<Organization>;
 
 @Schema()
 export class Organization {
+  _id: string; // <--- Agrega esta línea para que TypeScript reconozca el _id
+  
   @Prop()
   name: string;
 
@@ -22,8 +24,9 @@ export class Organization {
   @Prop()
   identifier: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
-  users: User[];
+  // Lista de IDs de usuarios en Auth0
+  @Prop({ type: [String], required: true, default: [] })
+  userIds: string[];
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }] })
   projects: Project[];

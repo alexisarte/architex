@@ -12,8 +12,6 @@ const page = () => {
   const {deleteOrganization} = useContext(OrganizationsContext);
 
   const fetchOrganizations = async () => {
-    const response = await fetch("http://localhost:3000/organizations");
-    const data = await response.json();
     setUpdateOrganizations(false);
     setLoading(false);
   };

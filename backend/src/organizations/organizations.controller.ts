@@ -16,9 +16,25 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('organizations')
 export class OrganizationsController {
   constructor(private readonly organizationsService: OrganizationsService) {}
+
   @Post()
-  create(@Body() createOrganizationDto: CreateOrganizationDto) {
-    return this.organizationsService.create(createOrganizationDto);
+  async create(
+    @Body() createOrganizationDto: CreateOrganizationDto & { userId: string },
+  ) {
+    const { userId, ...orgData } = createOrganizationDto;
+
+    // Crear la organización
+    const organization = await this.organizationsService.create(orgData);
+
+    // Agregar la organización al usuario
+    if (userId) {
+      await this.organizationsService.addUserToOrganization(
+        organization._id,
+        userId,
+      );
+    }
+
+    return organization;
   }
 
   @Get()
@@ -42,5 +58,10 @@ export class OrganizationsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.organizationsService.remove(id);
+  }
+
+  @Get('user/:userId')
+  findByUser(@Param('userId') userId: string) {
+    return this.organizationsService.findByUser(userId);
   }
 }
